@@ -1,21 +1,14 @@
 import {dbConnect} from "@utils/database";
 import Prompt from "@models/prompt";
 
-export const GET = async(req,res)=>
-{
-    try
-    {
-        await dbConnect();
-        const prompts = await Prompt.find({}).populate('creator');
-        // console.log("This is prompts -> ", prompts)
-        return res.status(200).json({
-            prompts
-        })
+export const GET = async (request) => {
+    try {
+        await dbConnect()
 
+        const prompts = await Prompt.find({}).populate('creator')
+
+        return new Response(JSON.stringify(prompts), { status: 200 })
+    } catch (error) {
+        return new Response("Failed to fetch all prompts", { status: 500 })
     }
-    catch(err)
-    {
-       
-        return new Response("Failed to Fetch the Prompts",{status:500});
-    }
-}
+} 
